@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "Tilt Neon";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/tiltneon/v5/E21L_d7gguXdwD9LEFY2WCeElCNtd-eBqpHp1TzrkJSmwpj5ndxquUK6UOc.woff2)
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/kalam/v16/YA9dr0Wd4kDdMthROCc.woff2)
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+body {
+  font-family: "Tilt Neon";
+  box-sizing: border-box;
+  background-image: url("./objective-wooden-blocks-760.jpg");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+}
+
+.container {
+  margin-top: 120px;
+  background-color: white;
+  box-shadow: 3px 3px 3px gray;
+  border-radius: 8px;
+  width: 414px;
+  margin-left: 200px;
+  padding: 40px;
+}
+h1 {
+  color: darkblue;
+  margin-right: 400px;
+  text-align: center;
+  width: 400px;
+}
+
+main {
+  margin-right: 400px;
+}
+input.searchBox {
+  background-color: rgb(253, 251, 251);
+  width: 400px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: 3px 3px 3px gray;
+  padding-left: 10px;
+  font-family: "Tilt Neon";
+  border: 1px solid rgb(219, 216, 216);
+}
+
+input.searchBox:focus {
+  outline: 2px solid darkblue;
+}
+
+.tasks {
+  width: 414px;
+  margin-bottom: 20px;
+}
+ul {
+  font-family: "Kalam";
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+li button {
+  background-color: darkblue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+li button:hover {
+  cursor: pointer;
+  background-color: rgb(0, 0, 204);
+}
+
+.newItem button {
+  background-color: white;
+  border-radius: 4px;
+  color: darkblue;
+  border: 2px solid darkblue;
+  width: 50px;
+  height: 40px;
+}
+
+.newItem button:hover {
+  background-color: darkblue;
+  color: white;
+  cursor: pointer;
+}
+
+form {
+  width: 414px;
+  background-color: rgb(253, 251, 251);
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(219, 216, 216);
+  padding: 1px;
+  border-radius: 4px;
+  box-shadow: 3px 3px 3px gray;
+}
+
+input.addBox {
+  background-color: rgb(253, 251, 251);
+
+  flex-grow: 2;
+  border: none;
+}
+
+input.addBox:focus {
+  outline: none;
+}
+form:focus-within {
+  outline: 2px solid darkblue;
+}
