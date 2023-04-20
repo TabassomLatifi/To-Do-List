@@ -2,30 +2,12 @@ let list = document.querySelector("#to-do-list");
 let addInput = document.querySelector(".newItem Input");
 let searchInput = document.querySelector(".searchBox Input");
 let addBtn = document.querySelector(".newItem button");
-let tempList = !localStorage.getItem("list") ? [] : localStorage.getItem("list").split(",");
-
-
-list.addEventListener("click", (e) => {
-  if (e.target.nodeName === "BUTTON") {
-    e.target.parentNode.remove();
-    let completeList = localStorage.getItem("list");
-    let deletedtask = e.target.parentNode.querySelector("span").innerText;
-    completeList = completeList.replace(deletedtask, "");
-    completeList = completeList.replace(",,", ",");
-    if (completeList.endsWith(",")) {
-      completeList = completeList.substring(0, completeList.length - 1);
-    }
-    if (completeList.startsWith(",")) {
-      completeList = completeList.substring(1);
-    }
-    localStorage.setItem("list", completeList);
-
-    if (list.children.length === 0) {
-      createEmptyMsg();
-      localStorage.removeItem("list");
-    }
-  }
-});
+let tempList = !localStorage.getItem("list")
+  ? []
+  : localStorage.getItem("list").split(",");
+let doneItems = !localStorage.getItem("done")
+  ? []
+  : localStorage.getItem("done").split(",");
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -35,22 +17,87 @@ addBtn.addEventListener("click", (e) => {
   if (document.querySelector("#emptyMsg")) {
     document.querySelector("#emptyMsg").remove();
   }
-  list.appendChild(createListItem(addInput.value));
-  tempList.push(addInput.value);
+  list.appendChild(createListItem(addInput.value, "new"));
+  if (!Array.from(tempList).some((item) => item === addInput.value)) {
+    tempList.push(addInput.value);
+  }
   localStorage.setItem("list", tempList);
   addInput.value = "";
 });
 
-function createListItem(itemValue) {
+function createListItem(itemValue, status) {
   let item = document.createElement("li");
   let title = document.createElement("span");
   let btn = document.createElement("button");
+  let doneBtn = document.createElement("button");
+  let div = document.createElement("div");
   title.innerText = itemValue;
   btn.innerText = "delete";
+  btn.style.padding = "5px";
+  doneBtn.style.padding = "3px";
+  doneBtn.style.width = "50px";
+  doneBtn.style.marginRight = "5px";
+
+  if (status === "new") {
+    doneBtn.innerText = "done";
+    doneBtn.style.backgroundColor = "orange";
+  } else {
+    doneBtn.style.backgroundColor = "green";
+    doneBtn.innerHTML = '<img src="check-solid.svg" width="15px">';
+  }
   item.appendChild(title);
-  item.appendChild(btn);
+  item.appendChild(div);
+  div.appendChild(doneBtn);
+  div.appendChild(btn);
   return item;
 }
+
+list.addEventListener("click", (e) => {
+  let deletedtask =
+    e.target.parentNode.parentNode.querySelector("span").innerText;
+  if (e.target.nodeName === "BUTTON" && e.target.innerText === "delete") {
+    e.target.parentNode.parentNode.remove();
+    let completeList = localStorage.getItem("list");
+    completeList = completeList.replace(deletedtask, "");
+    completeList = completeList.replace(",,", ",");
+
+    if (completeList.endsWith(",")) {
+      completeList = completeList.substring(0, completeList.length - 1);
+    }
+
+    if (completeList.startsWith(",")) {
+      completeList = completeList.substring(1);
+    }
+
+    localStorage.setItem("list", completeList);
+
+    if (doneItems.length > 0) {
+      let doneList = localStorage.getItem("done");
+      doneList = doneList.replace(deletedtask, "");
+      doneList = doneList.replace(",,", ",");
+      if (doneList.endsWith(",")) {
+        doneList = doneList.substring(0, doneList.length - 1);
+      }
+      if (doneList.startsWith(",")) {
+        doneList = doneList.substring(1);
+      }
+      localStorage.setItem("done", doneList);
+    }
+
+    if (list.children.length === 0) {
+      createEmptyMsg();
+      localStorage.removeItem("list");
+    }
+  } else if (e.target.nodeName === "BUTTON" && e.target.innerText === "done") {
+    doneItems.push(
+      e.target.parentNode.parentNode.querySelector("span").innerText
+    );
+    localStorage.setItem("done", doneItems);
+    e.target.innerText = "";
+    e.target.innerHTML = '<img src="check-solid.svg" width="15px">';
+    e.target.style.backgroundColor = "green";
+  }
+});
 
 searchInput.addEventListener("input", (e) => {
   Array.from(list.children).forEach((item) => {
@@ -73,12 +120,15 @@ searchInput.addEventListener("input", (e) => {
 if (!localStorage.getItem("list")) {
   createEmptyMsg();
 } else {
-  localStorage
-    .getItem("list")
-    .split(",")
-    .forEach((item) => {
-      list.appendChild(createListItem(item));
-    });
+  let doneArray = Array.from(doneItems);
+  let listArray = Array.from(tempList);
+  for (let item of listArray) {
+    if (doneArray.some((i) => i === item)) {
+      list.appendChild(createListItem(item, "done"));
+    } else {
+      list.appendChild(createListItem(item, "new"));
+    }
+  }
 }
 
 function createEmptyMsg() {
